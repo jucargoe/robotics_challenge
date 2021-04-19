@@ -1,0 +1,7 @@
+<launch>
+	<node pkg="epd3" 
+        type="challenge_rviz_goal.py" 
+        name="navigation" 
+        args=""
+    />
+</launch>

@@ -57,4 +57,6 @@
 	</node>
 
 	<node pkg="rviz" type="rviz" name="rviz" args="-d $(find robotics_challenge)/rviz/turtlebot.rviz"/>
+    
+    <include file="$(find robotics_challenge)/launch/navigation.launch" ></include>
 </launch>

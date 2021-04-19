@@ -1,7 +1,12 @@
 <launch>
-	<node pkg="epd3" 
+	<!--<node pkg="epd3" 
         type="challenge_rviz_goal.py" 
-        name="navigation" 
+        name="rviz_listener" 
         args=""
-    />
+    />-->
+	<!--<node pkg="epd4" 
+        type="challenge_orca.py" 
+        name="route_calculator" 
+        args=""
+    />-->
 </launch>

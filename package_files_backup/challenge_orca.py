@@ -32,7 +32,6 @@ class Orca():
         # print(str(self.robot_position_x), str(self.robot_position_y))
 
     def scan(self, laser_data):
-        # TODO
         print("scan")
         # position = (0., 0.)
         # velocity = (self.linear, self.angular)
@@ -78,10 +77,12 @@ class Orca():
                     self.angular = -0.3
 
                 if self.angular < 0.1 and self.angular > -0.1:
-                    self.linear += 0.1 if self.linear == 0.0 else self.linear * 0.25
+                    self.linear = 0.1 if self.linear == 0.0 else self.linear * 1.15
 
                     if self.linear > 0.5:
                         self.linear = 0.5
+                else:
+                    self.linear /= 2
             else:
                 self.angular = 0.0
                 self.linear = 0.0

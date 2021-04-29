@@ -1,9 +1,14 @@
 <launch>
-	<!--<node pkg="epd3" 
-        type="challenge_rviz_goal.py" 
-        name="rviz_listener" 
+	<node pkg="rva_basic_tools" 
+        type="scan_downsampler.py" 
+        name="ScanDownsampler" 
         args=""
-    />-->
+    />
+	<node pkg="epd3" 
+        type="challenge_rviz_listener.py" 
+        name="RvizListener" 
+        args=""
+    /><!---->
 	<!--<node pkg="epd4" 
         type="challenge_orca.py" 
         name="route_calculator" 

@@ -3,7 +3,7 @@ Robotic challenge scenarios for the Robotics and Advanced subject of UPO's Softw
 
 ## Installation instructions
 
-This branch has been specifically adapted to the ROS Melodic distribution, and tested in Ubuntu 18.04.
+This branch has been specifically adapted to the ROS Melodic and Noetic distributions. It has been tested in Ubuntu 18.04 and Ubuntu 20.04, respectively.
 
 We provide you with a useful installation script that you can use for easily installing it into a ROS workspace. To use it you have to specify the target catkin workspace where the node should be installed. To do this you can use:
 

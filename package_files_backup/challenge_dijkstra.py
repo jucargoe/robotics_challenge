@@ -39,9 +39,11 @@ class Dijkstra:
         oy = list()
          # obstacle map generation
         self.obstacle_map = [[False for _ in range(self.y_width)] for _ in range(self.x_width)]
+        self.obstacle_map_value = [[0 for _ in range(self.y_width)] for _ in range(self.x_width)]
         obstacles = 0
         for value in costmap.data:
-            if value > 99:
+            self.obstacle_map_value[x][y] = value
+            if value > 90:
                 obstacles += 1
                 self.obstacle_map[x][y] = True
                 ox.append(float(x)*self.resolution +self.min_x)
@@ -83,6 +85,7 @@ class Dijkstra:
             rx: x position list of the final path
             ry: y position list of the final path
         """
+        print("calculando planning")
         if show_animation:  # pragma: no cover
             plt.plot(sx, sy, "og")
             plt.plot(gx, gy, "xb")
@@ -92,6 +95,8 @@ class Dijkstra:
         start_node = self.Node(self.calc_xy_index(sx, self.min_x), self.calc_xy_index(sy, self.min_y), 0.0, -1)
         goal_node = self.Node(self.calc_xy_index(gx, self.min_x), self.calc_xy_index(gy, self.min_y), 0.0, -1)
 
+        print("start_node value: ", self.obstacle_map_value[int(start_node.x)][int(start_node.y)])
+        print("goal_node value: ", self.obstacle_map_value[int(goal_node.x)][int(goal_node.y)])
         if (not self.verify_node(start_node)):
             print("Error: init not valid")
             return (0,0)

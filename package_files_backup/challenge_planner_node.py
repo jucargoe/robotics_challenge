@@ -43,10 +43,13 @@ class Planner:
 
     def map_callback(self, map):
         self.map = map
-        if self.init is False and self.goalx and self.initx:
-            self.init = True
-            self.path = self.calculate_path(self.initx, self.inity, self.goalx, self.goaly)
-            self.publish_path_marker(self.path)
+        try:
+            if self.init is False and self.goalx and self.initx:
+                self.init = True
+                self.path = self.calculate_path(self.initx, self.inity, self.goalx, self.goaly)
+                self.publish_path_marker(self.path)
+        except Exception as e:
+            print("================="+str(e))
 
     def calculate_path(self, ix, iy, gx, gy):
         self.dijkstra = Dijkstra(self.map)

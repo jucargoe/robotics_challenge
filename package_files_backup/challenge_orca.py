@@ -10,6 +10,7 @@ from sensor_msgs.msg import LaserScan
 from nav_msgs.msg import Odometry
 from visualization_msgs.msg import Marker
 from challenge_halfplaneintersect import InfeasibleError
+from std_msgs.msg import Bool
 
 class Orca():
     def __init__(self):
@@ -25,9 +26,10 @@ class Orca():
         self.angular_vel_max = 0.3
         self.angular_error = 0.2
         self.distance_error = 0.1
-        self.contador = 0
+        self.recalculating_route = False
 
         self.cmd_vel = rospy.Publisher('cmd_vel', Twist, queue_size=10)
+        self.request_new_route = rospy.Publisher('~recalculate_route', Bool, queue_size=10)
         self.listener = tf.TransformListener()
 
         rospy.Subscriber("/ScanDownsampler/laser", LaserScan, self.scan)
@@ -36,16 +38,16 @@ class Orca():
         rospy.Subscriber('/Planning/path_marker', Marker, self.path)
 
     def scan(self, laser_data):
-        if self.linear > 0.0 and self.contador == 0:
+        if self.linear > 0.0:
             position = (0., 0.)
             velocity = (self.linear*np.cos(self.angular), self.linear*np.sin(self.angular))
             radius = 0.3
             max_speed = 0.5
             pref_velocity = np.array(velocity)
             robot = pyorca.Agent(position, velocity, radius, max_speed, pref_velocity)
-            
+
             try:
-                vel, lines = pyorca.orca(robot, self.agents, 2, 0.5)
+                vel, lines = pyorca.orca(robot, self.agents, 2.5, 0.5)
                 velocity_parser = [np.sqrt(vel[0]**2 + vel[1]**2), np.arctan2(vel[1], vel[0])]
 
                 self.linear = velocity_parser[0]
@@ -57,16 +59,15 @@ class Orca():
                     self.angular = self.angular_vel_max
                 elif self.angular < -self.angular_vel_max:
                     self.angular = -self.angular_vel_max
-                    
             except InfeasibleError:
-                self.contador = 5
-                self.linear = -0.2
-                self.angular = 0
-
-        elif self.contador > 0:
-            self.contador -= 1
-            self.linear = -0.2
-            self.angular = 0
+                print("inalcanzable, solicitando nueva ruta...")
+                if self.recalculating_route is False:
+                    self.linear = 0.0
+                    self.angular = 0.0
+                    self.publish(self.linear, self.angular)
+                    self.goals = []
+                    self.request_new_route.publish(Bool())
+                    self.recalculating_route = True
 
     def marker(self, marker_data):
         self.agents = []
@@ -89,9 +90,11 @@ class Orca():
             goals.append((point.x, point.y))
 
         self.goals = goals
+        self.recalculating_route = False
 
     def command(self):
         if len(self.goals) > 0:
+            # TODO set this code in common function
             goal = PointStamped()
             goal.header.frame_id = "map"
             goal.header.stamp = rospy.Time()
@@ -104,6 +107,7 @@ class Orca():
             except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
                 rospy.loginfo("Problem TF")
                 return
+            # =====END TODO=====
 
             self.goal_x = base_goal.point.x
             self.goal_y = base_goal.point.y
@@ -146,7 +150,7 @@ class Orca():
         rospy.sleep(1)
 
 if __name__ == '__main__':
-    try:
+    #try:
         rospy.init_node('Orca', anonymous=False)
         rospy.loginfo("To stop Orca CTRL + C")
         orca = Orca()
@@ -156,5 +160,5 @@ if __name__ == '__main__':
             orca.command()
             r.sleep()
 
-    except:
-        rospy.loginfo("Orca node terminated.")
+    #except:
+    #    rospy.loginfo("Orca node terminated.")

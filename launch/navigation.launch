@@ -3,20 +3,24 @@
         type="scan_downsampler.py" 
         name="ScanDownsampler" 
         args=""
+        output="screen"
     />
-	<!--<node pkg="epd3"
+	<node pkg="epd3"
         type="challenge_rviz_listener.py" 
         name="RvizListener" 
         args=""
-    />-->
-	<!--<node pkg="epd4" 
+        output="screen"
+    /><!---->
+	<node pkg="epd4"
         type="challenge_orca.py" 
         name="Orca" 
         args=""
-    />-->
-	<!--<node pkg="epd5"
+        output="screen"
+    /><!---->
+	<node pkg="epd5"
         type="challenge_planner_node.py"
         name="Planning"
         args=""
-    />-->
+        output="screen"
+    /><!---->
 </launch>

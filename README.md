@@ -33,3 +33,6 @@ For start the challenge, you only need to execute the bash script robotics_chall
 $ rosrun robotics_challenge robotics_challenge_3.bash
 ```
 RVIZ topics for scan down sampler and path planning are loaded automatically. Only need to put the 2D nav goal and enjoy.
+
+## Solution
+The robot will follow a route and, if it detects an obstacle in the way, it will recalculate the route to avoid the obstacle

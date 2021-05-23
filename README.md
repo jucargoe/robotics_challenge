@@ -28,8 +28,8 @@ $  rosrun robotics_challenge robotics_challenge_1.bash
 ```
 
 ## Installation for testing
-Put all folders inside "packages" folder in the catkin root directory. Then run:
+For start the challenge, you only need to execute the bash script robotics_challenge_3.bash with this command:
 ```
 $ rosrun robotics_challenge robotics_challenge_3.bash
 ```
-RVIZ topics for scan down sampler and path planning are loaded automatically
+RVIZ topics for scan down sampler and path planning are loaded automatically. Only need to put the 2D nav goal and enjoy.

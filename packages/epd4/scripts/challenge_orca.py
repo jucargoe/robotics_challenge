@@ -60,7 +60,7 @@ class Orca():
                 elif self.angular < -self.angular_vel_max:
                     self.angular = -self.angular_vel_max
             except InfeasibleError:
-                print("inalcanzable, solicitando nueva ruta...")
+                print("punto de ruta inalcanzable, recalculando ruta...")
                 if self.recalculating_route is False:
                     self.linear = 0.0
                     self.angular = 0.0
@@ -94,7 +94,6 @@ class Orca():
 
     def command(self):
         if len(self.goals) > 0:
-            # TODO set this code in common function
             goal = PointStamped()
             goal.header.frame_id = "map"
             goal.header.stamp = rospy.Time()
@@ -107,7 +106,6 @@ class Orca():
             except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
                 rospy.loginfo("Problem TF")
                 return
-            # =====END TODO=====
 
             self.goal_x = base_goal.point.x
             self.goal_y = base_goal.point.y
@@ -150,7 +148,7 @@ class Orca():
         rospy.sleep(1)
 
 if __name__ == '__main__':
-    #try:
+    try:
         rospy.init_node('Orca', anonymous=False)
         rospy.loginfo("To stop Orca CTRL + C")
         orca = Orca()
@@ -160,5 +158,5 @@ if __name__ == '__main__':
             orca.command()
             r.sleep()
 
-    #except:
-    #    rospy.loginfo("Orca node terminated.")
+    except:
+        rospy.loginfo("Orca node terminated.")

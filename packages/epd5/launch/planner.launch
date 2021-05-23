@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+
+  <node name="planner" pkg="epd5" type="planner_node.py" output="screen">
+    <rosparam command="load" file="$(find epd5)/cfg/problem.yaml" />
+  </node>
+
+</launch>
+

@@ -1,0 +1,11 @@
+<launch>
+   <arg name="x" default="None"/>
+   <arg name="y" default="None"/>
+   <node pkg="epd3" type="controlGoalParameterServer.py" name="coordinates">
+      <param name="goal/x" value="$(arg x)"/>
+      <param name="goal/y" value="$(arg y)"/>
+   </node>
+   <node pkg="epd3" type="controlGoalParameterServer.py" name="routes" output="screen">
+      <rosparam file="$(find epd3)/src/path.yml" />
+   </node>
+</launch>

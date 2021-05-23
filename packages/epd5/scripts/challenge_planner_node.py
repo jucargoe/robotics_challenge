@@ -3,8 +3,6 @@
 """ A ROS planning node that subscribes to a costmap
   and generates a path by using the Djikstra algorithm"""
 
-import sys
-import math
 import rospy
 import tf
 from visualization_msgs.msg import Marker
@@ -36,7 +34,6 @@ class Planner:
         self.has_odometry = False
 
     def recalculate_route(self, data):
-        print("================RECALCULATING===============")
         self.has_odometry = False
         self.init = False
 
@@ -56,12 +53,11 @@ class Planner:
         self.map = map
         try:
             if self.init is False and self.has_goals is True and self.has_odometry is True:
-                print("map_callback")
                 self.init = True
                 self.path = self.calculate_path(self.initx, self.inity, self.goalx, self.goaly)
                 self.publish_path_marker(self.path)
         except Exception as e:
-            print("================="+str(e))
+            print("Error planner node: " + str(e))
 
     def calculate_path(self, ix, iy, gx, gy):
         self.dijkstra = Dijkstra(self.map)
@@ -93,7 +89,7 @@ class Planner:
 
 
 if __name__ == '__main__':
-    #try:
+    try:
         # initiliaze
         rospy.init_node('Planning', anonymous=False)
 
@@ -109,5 +105,5 @@ if __name__ == '__main__':
         while not rospy.is_shutdown():
             r.sleep()
 
-    #except:
-    #    rospy.loginfo("Planning node terminated.")
+    except:
+        rospy.loginfo("Planning node terminated.")

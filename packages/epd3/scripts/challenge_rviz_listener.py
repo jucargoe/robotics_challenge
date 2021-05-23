@@ -21,7 +21,6 @@ class RvizListener():
 
     def command(self):
         if self.goal_x != np.Infinity or self.goal_y != np.Infinity:
-            # TODO set this code in common function
             goal = PointStamped()
             goal.header.frame_id = "map"
             goal.header.stamp = rospy.Time()
@@ -34,7 +33,6 @@ class RvizListener():
             except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
                 rospy.loginfo("Problem TF")
                 return
-            # =====END TODO=====
 
             self.publish(base_goal)
 

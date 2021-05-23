@@ -10,17 +10,17 @@
         name="RvizListener" 
         args=""
         output="screen"
-    /><!---->
+    />
 	<node pkg="epd4"
         type="challenge_orca.py" 
         name="Orca" 
         args=""
         output="screen"
-    /><!---->
+    />
 	<node pkg="epd5"
         type="challenge_planner_node.py"
         name="Planning"
         args=""
         output="screen"
-    /><!---->
+    />
 </launch>
